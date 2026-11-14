@@ -82,6 +82,8 @@ export class Gateway {
       known: known.filter((e) => r.picks.some((p) => this.cat.needsOf.get(p.tool.id)?.has(e.type))),
       tokens: r.tokens,
       graph_queries: r.queries,
+      // how the walk got there: anchors, and consumer -> entity type -> producer edges
+      trace: { clauses: r.trace.clauses, anchors: r.trace.anchors, edges: r.trace.edges },
     }
   }
 
@@ -176,7 +178,8 @@ export class Gateway {
 }
 
 function describe(p: Pick) {
-  if (p.why === 'producer') return { tool: p.tool.name, why: `provides ${p.for}`, step: p.depth }
-  if (p.why === 'fill') return { tool: p.tool.name, why: 'related match' }
-  return { tool: p.tool.name, why: 'matches the task' }
+  const base = { tool: p.tool.name, key: p.tool.key, kind: p.why }
+  if (p.why === 'producer') return { ...base, why: `provides ${p.for}`, step: p.depth }
+  if (p.why === 'fill') return { ...base, why: 'related match' }
+  return { ...base, why: 'matches the task' }
 }
