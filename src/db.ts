@@ -1,10 +1,16 @@
 import neo4j, { type Driver, type Record as Neo4jRecord } from 'neo4j-driver'
 
+// the driver captures a stack on every run(); with tsx source maps on, node
+// throws while decoding some of our maps. plain stacks are fine here.
+process.setSourceMapsEnabled(false)
+
 const url = process.env.HYDRA_BOLT_URL ?? 'bolt://127.0.0.1:7687'
 const token = process.env.HYDRA_TOKEN ?? 'local-development-token-32-bytes'
 const database = process.env.HYDRA_GRAPH ?? 'default'
 
 let driver: Driver | undefined
+// one bookmark manager for the process so every read sees this process's writes
+const bookmarkManager = neo4j.bookmarkManager()
 
 export function db(): Driver {
   driver ??= neo4j.driver(url, neo4j.auth.basic('neo4j', token), {
@@ -44,7 +50,7 @@ function encode(v: unknown): unknown {
 
 export async function run(query: string, params: Row = {}): Promise<Row[]> {
   const t0 = performance.now()
-  const session = db().session({ database })
+  const session = db().session({ database, bookmarkManager })
   try {
     const res = await session.run(query, encode(params) as Row)
     return res.records.map(toRow)
