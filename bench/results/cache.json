@@ -1,0 +1,224 @@
+{
+  "rows": [
+    {
+      "pair": "refund-by-email -> cancel the stripe subscription for jane@acme.com too",
+      "cold": {
+        "calls": 3,
+        "tokens": 1120,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 2,
+        "tokens": 1064,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "stripe.search_customers"
+      ]
+    },
+    {
+      "pair": "upgrade-plan -> send ops@hooli.com their latest stripe invoice",
+      "cold": {
+        "calls": 3,
+        "tokens": 983,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 2,
+        "tokens": 977,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "stripe.search_customers"
+      ]
+    },
+    {
+      "pair": "incident-page -> post an all clear in the #incidents slack channel",
+      "cold": {
+        "calls": 2,
+        "tokens": 950,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 947,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "slack.find_channel"
+      ]
+    },
+    {
+      "pair": "dm-by-email -> send priya@acme.com another slack dm with the release notes link",
+      "cold": {
+        "calls": 3,
+        "tokens": 1020,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 2,
+        "tokens": 1055,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "slack.lookup_user_by_email"
+      ]
+    },
+    {
+      "pair": "ci-failure -> rerun the failed workflow run on acme/api main",
+      "cold": {
+        "calls": 2,
+        "tokens": 1030,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 930,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "github.list_workflow_runs"
+      ]
+    },
+    {
+      "pair": "rollback-vercel -> show the build logs of that vercel deployment",
+      "cold": {
+        "calls": 3,
+        "tokens": 894,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 995,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "vercel.list_projects",
+        "vercel.list_deployments"
+      ]
+    },
+    {
+      "pair": "jira-assign-by-name -> also assign jira issue OPS-92 to maria lopez",
+      "cold": {
+        "calls": 2,
+        "tokens": 1186,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 1226,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "jira.search_users"
+      ]
+    },
+    {
+      "pair": "ticket-order-status -> cancel that shopify order and restock the items",
+      "cold": {
+        "calls": 2,
+        "tokens": 943,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 834,
+        "complete": true,
+        "returned": 8
+      },
+      "skipped": [
+        "shopify.search_orders"
+      ]
+    },
+    {
+      "pair": "cw-logs -> run the same cloudwatch logs query for 4xx errors",
+      "cold": {
+        "calls": 2,
+        "tokens": 1197,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 1261,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "aws.logs_describe_groups"
+      ]
+    },
+    {
+      "pair": "linear-refund -> email the customer from linear issue ENG-412 that the refund is on its way",
+      "cold": {
+        "calls": 3,
+        "tokens": 1117,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 1121,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "linear.get_issue",
+        "linear.get_user"
+      ]
+    },
+    {
+      "pair": "mute-monitor -> unmute that datadog monitor and show its current state",
+      "cold": {
+        "calls": 2,
+        "tokens": 952,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 994,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "datadog.list_monitors"
+      ]
+    },
+    {
+      "pair": "notion-roadmap -> add a comment on the q4 roadmap page in notion asking for review",
+      "cold": {
+        "calls": 2,
+        "tokens": 885,
+        "complete": true,
+        "returned": 10
+      },
+      "warm": {
+        "calls": 1,
+        "tokens": 891,
+        "complete": true,
+        "returned": 10
+      },
+      "skipped": [
+        "notion.search"
+      ]
+    }
+  ],
+  "coldCalls": 29,
+  "warmCalls": 15
+}

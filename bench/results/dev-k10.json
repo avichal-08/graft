@@ -1,0 +1,856 @@
+{
+  "split": "dev",
+  "k": 10,
+  "tasks": 30,
+  "results": [
+    {
+      "arm": "all tools",
+      "recall": 1,
+      "complete": 1,
+      "tokens": 27665,
+      "tools": 284,
+      "precision": 0.011150234741784037,
+      "queries": 0,
+      "ms": 0.018516666666588813
+    },
+    {
+      "arm": "flat top-k",
+      "recall": 0.7988888888888889,
+      "complete": 0.5,
+      "tokens": 1007.9333333333333,
+      "tools": 9.766666666666667,
+      "precision": 0.24573378839590443,
+      "queries": 0,
+      "ms": 1.7164066666666258
+    },
+    {
+      "arm": "dense top-k",
+      "recall": 0.6822222222222223,
+      "complete": 0.4,
+      "tokens": 1018.6666666666666,
+      "tools": 10,
+      "precision": 0.2,
+      "queries": 0,
+      "ms": 58.4130666666666
+    },
+    {
+      "arm": "graft lean",
+      "recall": 0.8588888888888889,
+      "complete": 0.6,
+      "tokens": 566.8666666666667,
+      "tools": 5.266666666666667,
+      "precision": 0.4936708860759494,
+      "queries": 4.4,
+      "ms": 91.84192333333324
+    },
+    {
+      "arm": "graft",
+      "recall": 0.9255555555555557,
+      "complete": 0.7333333333333333,
+      "tokens": 1007.9333333333333,
+      "tools": 9.766666666666667,
+      "precision": 0.2935153583617747,
+      "queries": 4.4,
+      "ms": 100.81473000000011
+    }
+  ],
+  "perTask": {
+    "refund-by-email": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "stripe.list_charges",
+          "gmail.send_email"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "linear-refund": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.4,
+        "missing": [
+          "linear.get_issue",
+          "linear.get_user",
+          "stripe.search_customers"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.2,
+        "missing": [
+          "linear.get_issue",
+          "linear.get_user",
+          "stripe.search_customers",
+          "stripe.list_charges"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.8,
+        "missing": [
+          "linear.get_issue"
+        ]
+      },
+      "graft": {
+        "recall": 0.8,
+        "missing": [
+          "linear.get_issue"
+        ]
+      }
+    },
+    "meet-dana": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "cancel-sub": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "stripe.search_customers"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "stripe.search_customers",
+          "stripe.list_subscriptions"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "ticket-order-status": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "zendesk.get_ticket",
+          "zendesk.get_user",
+          "shopify.get_order"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.8333333333333334,
+        "missing": [
+          "zendesk.get_user"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "zendesk.get_ticket",
+          "zendesk.update_ticket"
+        ]
+      },
+      "graft": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "zendesk.get_ticket",
+          "zendesk.update_ticket"
+        ]
+      }
+    },
+    "rerun-ci": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "jira-close": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "jira.get_transitions"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "linear-from-sentry": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "linear.list_teams"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.75,
+        "missing": [
+          "linear.list_teams"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "deal-owner-ping": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "hubspot.list_owners",
+          "slack.lookup_user_by_email"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.16666666666666666,
+        "missing": [
+          "hubspot.search_deals",
+          "hubspot.list_owners",
+          "slack.lookup_user_by_email",
+          "slack.open_dm",
+          "slack.post_message"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "hubspot.search_deals",
+          "hubspot.get_deal",
+          "slack.lookup_user_by_email",
+          "slack.open_dm"
+        ]
+      },
+      "graft": {
+        "recall": 0.8333333333333334,
+        "missing": [
+          "slack.lookup_user_by_email"
+        ]
+      }
+    },
+    "ack-incident": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "runbook": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "slack.find_channel"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "slack.find_channel",
+          "slack.post_message"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.75,
+        "missing": [
+          "confluence.get_page"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "inventory": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "upgrade-plan": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "stripe.search_customers",
+          "stripe.list_subscriptions"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.75,
+        "missing": [
+          "stripe.list_prices"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "dd-errors": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "slack.find_channel"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "slack.find_channel",
+          "slack.post_message"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "declare-incident": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "lambda-timeout": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "s3-share": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "aws.s3_list_objects"
+        ]
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "signup-count": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.75,
+        "missing": [
+          "postgres.list_schemas"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.75,
+        "missing": [
+          "postgres.describe_table"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "notion-tracker": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "notion.query_database"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "sheet-append": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "stripe.get_balance",
+          "gdrive.search_files"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "gdrive.search_files",
+          "gdrive.append_sheet_rows"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "stripe.get_balance"
+        ]
+      },
+      "graft": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "stripe.get_balance"
+        ]
+      }
+    },
+    "repo-issue": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "merge-pr": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "linear-assign": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.4,
+        "missing": [
+          "linear.list_teams",
+          "linear.list_users",
+          "linear.update_issue"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.6,
+        "missing": [
+          "linear.list_teams",
+          "linear.list_users"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.8,
+        "missing": [
+          "linear.list_users"
+        ]
+      },
+      "graft": {
+        "recall": 0.8,
+        "missing": [
+          "linear.list_users"
+        ]
+      }
+    },
+    "intercom-close": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "web-research": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "web.fetch"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.25,
+        "missing": [
+          "web.search",
+          "web.fetch",
+          "notion.create_page"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.75,
+        "missing": [
+          "web.fetch"
+        ]
+      },
+      "graft": {
+        "recall": 0.75,
+        "missing": [
+          "web.fetch"
+        ]
+      }
+    },
+    "fs-edit": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.read_text_file"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0,
+        "missing": [
+          "filesystem.read_text_file",
+          "filesystem.edit_file"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.read_text_file"
+        ]
+      },
+      "graft": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.read_text_file"
+        ]
+      }
+    },
+    "calendar-reschedule": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "gcal.list_events"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "gcal.list_events"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "salesforce-opp": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "salesforce.soql_query"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "oncall-swap": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "pagerduty.list_oncalls"
+        ]
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "release-regression": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "github.get_commit"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.75,
+        "missing": [
+          "github.get_commit"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "sentry.get_issue",
+          "github.get_commit"
+        ]
+      },
+      "graft": {
+        "recall": 0.75,
+        "missing": [
+          "github.get_commit"
+        ]
+      }
+    }
+  }
+}

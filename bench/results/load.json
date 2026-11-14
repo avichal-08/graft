@@ -1,0 +1,35 @@
+{
+  "duration": 20,
+  "results": [
+    {
+      "connections": 1,
+      "rps": 21,
+      "p50": 44,
+      "p95": 95,
+      "p99": 103,
+      "errors": 0,
+      "non2xx": 0,
+      "requests": 420
+    },
+    {
+      "connections": 10,
+      "rps": 36.21,
+      "p50": 253,
+      "p95": 587,
+      "p99": 708,
+      "errors": 0,
+      "non2xx": 0,
+      "requests": 724
+    },
+    {
+      "connections": 50,
+      "rps": 39.21,
+      "p50": 1180,
+      "p95": 2349,
+      "p99": 2743,
+      "errors": 0,
+      "non2xx": 0,
+      "requests": 784
+    }
+  ]
+}

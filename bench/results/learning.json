@@ -1,0 +1,82 @@
+{
+  "k": 10,
+  "rounds": 5,
+  "curves": {
+    "heldout": [
+      {
+        "round": 0,
+        "recall": 0.865,
+        "complete": 0.6666666666666666,
+        "tokens": 998
+      },
+      {
+        "round": 1,
+        "recall": 0.865,
+        "complete": 0.6666666666666666,
+        "tokens": 996
+      },
+      {
+        "round": 2,
+        "recall": 0.8527777777777779,
+        "complete": 0.6666666666666666,
+        "tokens": 997
+      },
+      {
+        "round": 3,
+        "recall": 0.8527777777777779,
+        "complete": 0.6666666666666666,
+        "tokens": 995
+      },
+      {
+        "round": 4,
+        "recall": 0.8527777777777779,
+        "complete": 0.6666666666666666,
+        "tokens": 1003
+      },
+      {
+        "round": 5,
+        "recall": 0.8416666666666668,
+        "complete": 0.6333333333333333,
+        "tokens": 1000
+      }
+    ],
+    "recurring": [
+      {
+        "round": 0,
+        "recall": 0.865,
+        "complete": 0.6666666666666666,
+        "tokens": 998
+      },
+      {
+        "round": 1,
+        "recall": 0.9738888888888888,
+        "complete": 0.9,
+        "tokens": 995
+      },
+      {
+        "round": 2,
+        "recall": 1,
+        "complete": 1,
+        "tokens": 994
+      },
+      {
+        "round": 3,
+        "recall": 1,
+        "complete": 1,
+        "tokens": 997
+      },
+      {
+        "round": 4,
+        "recall": 1,
+        "complete": 1,
+        "tokens": 996
+      },
+      {
+        "round": 5,
+        "recall": 1,
+        "complete": 1,
+        "tokens": 998
+      }
+    ]
+  }
+}

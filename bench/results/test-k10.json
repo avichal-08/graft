@@ -1,0 +1,868 @@
+{
+  "split": "test",
+  "k": 10,
+  "tasks": 30,
+  "results": [
+    {
+      "arm": "all tools",
+      "recall": 1,
+      "complete": 1,
+      "tokens": 27665,
+      "tools": 284,
+      "precision": 0.010328638497652582,
+      "queries": 0,
+      "ms": 0.022909999999895566
+    },
+    {
+      "arm": "flat top-k",
+      "recall": 0.7638888888888891,
+      "complete": 0.4666666666666667,
+      "tokens": 997.7,
+      "tools": 9.733333333333333,
+      "precision": 0.21575342465753425,
+      "queries": 0,
+      "ms": 1.7585666666666233
+    },
+    {
+      "arm": "dense top-k",
+      "recall": 0.7599999999999999,
+      "complete": 0.5333333333333333,
+      "tokens": 1015,
+      "tools": 10,
+      "precision": 0.20333333333333334,
+      "queries": 0,
+      "ms": 42.295903333333385
+    },
+    {
+      "arm": "graft lean",
+      "recall": 0.7361111111111112,
+      "complete": 0.43333333333333335,
+      "tokens": 495.1666666666667,
+      "tools": 4.766666666666667,
+      "precision": 0.43356643356643354,
+      "queries": 4.3,
+      "ms": 51.07243999999998
+    },
+    {
+      "arm": "graft",
+      "recall": 0.865,
+      "complete": 0.6666666666666666,
+      "tokens": 997.6666666666666,
+      "tools": 9.766666666666667,
+      "precision": 0.2525597269624573,
+      "queries": 4.3,
+      "ms": 45.10924666666673
+    }
+  ],
+  "perTask": {
+    "incident-page": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "pagerduty.list_oncalls"
+        ]
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "sentry-to-pr": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "github.search_repositories",
+          "github.create_branch",
+          "github.create_or_update_file"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "github.search_repositories",
+          "github.create_branch",
+          "github.create_or_update_file",
+          "github.create_pull_request"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "sentry.get_latest_event",
+          "github.create_branch",
+          "github.create_or_update_file"
+        ]
+      },
+      "graft": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "github.create_branch",
+          "github.create_or_update_file"
+        ]
+      }
+    },
+    "dm-by-email": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "slack.lookup_user_by_email"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "slack.lookup_user_by_email"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "slack.post_message"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "zendesk-reply": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "zendesk.get_ticket"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "ci-failure": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "rollback-vercel": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "vercel.list_deployments"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "jira-assign-by-name": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "jira.search_users"
+        ]
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "deal-notes": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "hubspot.search_companies"
+        ]
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "hubspot.search_companies",
+          "hubspot.get_company"
+        ]
+      },
+      "graft": {
+        "recall": 0.75,
+        "missing": [
+          "hubspot.search_companies"
+        ]
+      }
+    },
+    "sms-oncall": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "pagerduty.get_user",
+          "twilio.list_phone_numbers"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "twilio.list_phone_numbers",
+          "twilio.send_sms"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.25,
+        "missing": [
+          "pagerduty.get_user",
+          "twilio.list_phone_numbers",
+          "twilio.send_sms"
+        ]
+      },
+      "graft": {
+        "recall": 0.5,
+        "missing": [
+          "pagerduty.get_user",
+          "twilio.list_phone_numbers"
+        ]
+      }
+    },
+    "postmortem": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.4,
+        "missing": [
+          "pagerduty.get_incident",
+          "slack.find_channel",
+          "confluence.list_spaces"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.4,
+        "missing": [
+          "slack.find_channel",
+          "slack.get_channel_history",
+          "confluence.list_spaces"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.4,
+        "missing": [
+          "pagerduty.get_incident",
+          "slack.find_channel",
+          "slack.get_channel_history"
+        ]
+      },
+      "graft": {
+        "recall": 0.6,
+        "missing": [
+          "pagerduty.get_incident",
+          "slack.find_channel"
+        ]
+      }
+    },
+    "shopify-refund": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "gmail.send_email"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.75,
+        "missing": [
+          "gmail.send_email"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "shopify.get_order",
+          "gmail.send_email"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "invoice-resend": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "stripe.search_customers"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "payment-link": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "stripe.list_products",
+          "gmail.send_email"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "stripe.list_products",
+          "gmail.send_email"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "gmail.send_email"
+        ]
+      },
+      "graft": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "gmail.send_email"
+        ]
+      }
+    },
+    "mute-monitor": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "reboot-ec2": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "cw-logs": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "slow-query": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "postgres.explain"
+        ]
+      },
+      "graft": {
+        "recall": 0.5,
+        "missing": [
+          "postgres.explain"
+        ]
+      }
+    },
+    "notion-roadmap": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "notion.append_blocks"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "drive-share": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "gdrive.search_files"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "doc-summary": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "gdrive.read_file",
+          "slack.find_channel"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0,
+        "missing": [
+          "gdrive.search_files",
+          "gdrive.read_file",
+          "slack.find_channel",
+          "slack.post_message"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "review-pr": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "github.get_pull_request_files"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "request-review": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "github.request_reviewers"
+        ]
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "github.request_reviewers"
+        ]
+      },
+      "graft": {
+        "recall": 0.5,
+        "missing": [
+          "github.request_reviewers"
+        ]
+      }
+    },
+    "linear-comment-slack": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "slack.find_channel"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "slack.find_channel",
+          "slack.post_message"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "intercom-to-linear": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.75,
+        "missing": [
+          "linear.list_teams"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.75,
+        "missing": [
+          "linear.list_teams"
+        ]
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "site-check": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.3333333333333333,
+        "missing": [
+          "web.check_status",
+          "slack.find_channel"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "web.check_status"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "web.check_status"
+        ]
+      },
+      "graft": {
+        "recall": 0.6666666666666666,
+        "missing": [
+          "web.check_status"
+        ]
+      }
+    },
+    "fs-find-tests": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.search_files"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.search_files"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.search_files"
+        ]
+      },
+      "graft": {
+        "recall": 0.5,
+        "missing": [
+          "filesystem.search_files"
+        ]
+      }
+    },
+    "gmail-invoice-attach": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 0.6,
+        "missing": [
+          "gmail.get_thread",
+          "gmail.get_attachment"
+        ]
+      },
+      "dense top-k": {
+        "recall": 0.4,
+        "missing": [
+          "gmail.search_threads",
+          "gmail.get_thread",
+          "gmail.get_attachment"
+        ]
+      },
+      "graft lean": {
+        "recall": 0.6,
+        "missing": [
+          "gmail.get_thread",
+          "gmail.get_attachment"
+        ]
+      },
+      "graft": {
+        "recall": 0.6,
+        "missing": [
+          "gmail.get_thread",
+          "gmail.get_attachment"
+        ]
+      }
+    },
+    "hubspot-lead": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "sentry-resolve": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 0.5,
+        "missing": [
+          "sentry.search_issues"
+        ]
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    },
+    "dispute-evidence": {
+      "all tools": {
+        "recall": 1,
+        "missing": []
+      },
+      "flat top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "dense top-k": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft lean": {
+        "recall": 1,
+        "missing": []
+      },
+      "graft": {
+        "recall": 1,
+        "missing": []
+      }
+    }
+  }
+}
