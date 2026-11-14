@@ -25,12 +25,12 @@ const web: [string, string, string][] = [
 
 function Table({ data }: { data: [string, string, string][] }) {
   return (
-    <table>
+    <div className="tbl"><table>
       <thead><tr><th>variable</th><th>default</th><th></th></tr></thead>
       <tbody>
         {data.map(([k, d, w]) => <tr key={k}><td><code>{k}</code></td><td><code>{d}</code></td><td>{w}</td></tr>)}
       </tbody>
-    </table>
+    </table></div>
   )
 }
 

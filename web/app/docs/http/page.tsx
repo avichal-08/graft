@@ -12,7 +12,7 @@ export default function Http() {
         listens on port 7700.
       </p>
 
-      <table>
+      <div className="tbl"><table>
         <thead><tr><th>endpoint</th><th>body</th></tr></thead>
         <tbody>
           <tr><td><code>POST /find_tools</code></td><td><code>task</code>, <code>session?</code>, <code>have?</code>, <code>k?</code>, <code>budget?</code> (max schema tokens, default 4000), <code>lean?</code> (graph picks only, no fill)</td></tr>
@@ -21,7 +21,7 @@ export default function Http() {
           <tr><td><code>POST /report_outcome</code></td><td><code>lookup</code>, <code>success</code>, <code>used?</code></td></tr>
           <tr><td><code>GET /health</code></td><td>returns <code>{'{ ok, tools }'}</code></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p>Over HTTP the session is a field in the body rather than an environment variable. Responses have the same shape as in the <a href="/docs/tools">tool reference</a>.</p>
 
       <h2>A whole task with curl</h2>

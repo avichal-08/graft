@@ -37,14 +37,14 @@ export default function Tools() {
 
       <h2 id="find_tools">find_tools</h2>
       <p>Describe the task and get back only the tools for it, with the order to use them in.</p>
-      <table>
+      <div className="tbl"><table>
         <thead><tr><th>input</th><th>type</th><th></th></tr></thead>
         <tbody>
           <tr><td><code>task</code></td><td>string</td><td>The task in plain words. Several intents are fine: “refund jane, then email her”.</td></tr>
           <tr><td><code>have</code></td><td>string[]</td><td>Entity types the agent already holds, like <code>email</code> or <code>linear.issue</code>. Lookups for these are skipped.</td></tr>
           <tr><td><code>k</code></td><td>number</td><td>Most tools to return, 1 to 30. Default 10.</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <Code label="response">{findResponse}</Code>
       <ul>
         <li><strong>tools</strong>: MCP tool definitions, ready to show the model or to call.</li>
@@ -56,14 +56,14 @@ export default function Tools() {
 
       <h2 id="call_tool">call_tool</h2>
       <p>Run a tool returned by <code>find_tools</code>. Entities in the result are stored in the session.</p>
-      <table>
+      <div className="tbl"><table>
         <thead><tr><th>input</th><th>type</th><th></th></tr></thead>
         <tbody>
           <tr><td><code>name</code></td><td>string</td><td>Tool name exactly as returned, e.g. <code>stripe_search_customers</code>.</td></tr>
           <tr><td><code>args</code></td><td>object</td><td>Arguments matching the tool&apos;s input schema.</td></tr>
           <tr><td><code>lookup</code></td><td>string</td><td>The lookup id from the find_tools call this came from.</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <Code label="response">{`{
   "ok": true,
   "result": { "tool": "stripe.search_customers", "customer": "cus_773200cc" },
@@ -77,14 +77,14 @@ export default function Tools() {
 
       <h2 id="report_outcome">report_outcome</h2>
       <p>Say whether the task worked. This is how graft learns.</p>
-      <table>
+      <div className="tbl"><table>
         <thead><tr><th>input</th><th>type</th><th></th></tr></thead>
         <tbody>
           <tr><td><code>lookup</code></td><td>string</td><td>The lookup id from find_tools.</td></tr>
           <tr><td><code>success</code></td><td>boolean</td><td>Whether the task was completed.</td></tr>
           <tr><td><code>used</code></td><td>string[]</td><td>Tools you used, including any you found another way. Those are the strongest signal.</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <Code label="response">{`{ "updated": 14, "hints": 212 }`}</Code>
     </>
   )

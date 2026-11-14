@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Scene } from '@/components/scene'
-import { Live } from '@/components/live'
+import { Playground } from '@/components/playground'
 import { ConnectTabs } from '@/components/connect-tabs'
 import { results, pct } from '@/lib/results'
 
@@ -154,12 +154,9 @@ export default async function Home() {
           <div className="section-head">
             <span className="kicker">Live</span>
             <h2>Watch the walk.</h2>
-            <p>This runs against the gateway. Filled boxes come from the words in the task; outlined ones were reached through the graph.</p>
+            <p>This runs against the gateway. Yellow tools come from the words in the task; every other colour was reached by walking the graph.</p>
           </div>
-          <div className="window" style={{ marginTop: 0 }}>
-            <div className="top"><i /><i /><i /><span>graft · playground</span></div>
-            <div className="pane"><Live /></div>
-          </div>
+          <Playground compact />
         </section>
 
         <section className="section">

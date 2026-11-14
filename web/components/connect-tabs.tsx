@@ -23,7 +23,7 @@ export function ConnectTabs({ compact = false }: { compact?: boolean }) {
           <input value={path} onChange={(e) => setPath(e.target.value || PATH)} spellCheck={false} />
         </label>
       )}
-      <Code label={c.where}>{c.snippet(path)}</Code>
+      <Code label={c.where} lang={c.lang as 'shell' | 'json' | 'toml'}>{c.snippet(path)}</Code>
       {c.note && <p className="hint">{c.note}</p>}
     </div>
   )

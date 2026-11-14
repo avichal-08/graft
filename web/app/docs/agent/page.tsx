@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Code } from '@/components/code'
+import { Callout } from '@/components/steps'
 
 export const metadata: Metadata = { title: 'Agent loop' }
 
@@ -65,10 +66,10 @@ found = requests.post(f"{API}/find_tools", json={
 tools = found["tools"]          # hand these to your model
 known = found["known"]          # and these as context`}</Code>
 
-      <div className="callout" style={{ ['--c' as string]: 'var(--mint)' }}>
+      <Callout tone="tip">
         Keep <code>k</code> small (6 to 10). graft orders each matched tool before the lookups it needs, so a small budget keeps whole chains rather than
         many unrelated tools.
-      </div>
+      </Callout>
     </>
   )
 }

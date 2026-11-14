@@ -3,6 +3,7 @@ import { Bars } from '@/components/bars'
 import { Lines } from '@/components/lines'
 import { Pairs } from '@/components/pairs'
 import { results, pct } from '@/lib/results'
+import { PageHero } from '@/components/page-hero'
 
 export const metadata: Metadata = { title: 'Benchmarks' }
 export const dynamic = 'force-dynamic'
@@ -23,14 +24,12 @@ export default async function Benchmarks() {
   if (load && one) tiles.push([`${one.p50} ms`, `median find_tools latency, ${load.results.reduce((s, r) => s + r.errors + r.non2xx, 0)} errors across all load levels`])
 
   return (
-    <main className="wrap">
-      <div className="dash-head">
-        <h1>Benchmarks</h1>
-        <p>
-          Every number here comes from the scripts in <code>bench/</code> and is committed with the code. Tool selection is scored without a
-          model: each task lists the tools an agent needs to finish it, including the lookups it never names.
-        </p>
-      </div>
+    <>
+    <PageHero kicker="Benchmarks" title="Measured, not claimed.">
+      Every number comes from the scripts in bench/ and is committed with the code. Tool selection is scored without a model: each task lists the
+      tools an agent needs to finish it, including the lookups it never names.
+    </PageHero>
+    <main className="wrap page-body">
 
       <section className="tiles">
         {tiles.map(([v, l]) => (
@@ -158,5 +157,6 @@ export default async function Benchmarks() {
         )}
       </section>
     </main>
+    </>
   )
 }

@@ -37,3 +37,9 @@ export function Pager() {
     </div>
   )
 }
+
+export function Crumb() {
+  const path = usePathname()
+  const sec = sections.find((s) => s.pages.some(([h]) => h === path))
+  return <div className="crumb">Docs{sec ? ` / ${sec.title}` : ''}</div>
+}

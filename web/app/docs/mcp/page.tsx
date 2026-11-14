@@ -27,7 +27,7 @@ export default function Mcp() {
       <Code label="instructions">{agentInstructions}</Code>
 
       <h2>Troubleshooting</h2>
-      <table>
+      <div className="tbl"><table>
         <thead><tr><th>symptom</th><th>cause</th></tr></thead>
         <tbody>
           <tr><td>client shows the server as failed</td><td>HydraDB is not reachable. Check <code>bash hydra/up.sh</code> and <code>npm run probe</code>.</td></tr>
@@ -35,7 +35,7 @@ export default function Mcp() {
           <tr><td><code>spawn npm ENOENT</code> on Windows</td><td>Use <code>npm.cmd</code> as the command.</td></tr>
           <tr><td>find_tools returns nothing useful</td><td>The catalog is not loaded. Run <code>npm run ingest</code>.</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </>
   )
 }

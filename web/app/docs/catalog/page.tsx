@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Code } from '@/components/code'
+import { Callout } from '@/components/steps'
 
 export const metadata: Metadata = { title: 'Adding tools' }
 
@@ -47,9 +48,9 @@ export const acme = server('acme', 'Acme Billing', 'Accounts and invoices in Acm
       <p>Import the server in <code>src/catalog/index.ts</code> and add it to the <code>servers</code> list, then check and reload:</p>
       <Code label="shell">{`npx tsx scripts/catalog-stats.ts   # counts, tokens, entity types with no producer
 npm run ingest -- --wipe           # reload the graph`}</Code>
-      <div className="callout" style={{ ['--c' as string]: 'var(--peach)' }}>
+      <Callout tone="warn">
         <code>--wipe</code> clears the whole graph, including sessions and learned hints, because node ids follow catalog order. Without it, ingest only adds.
-      </div>
+      </Callout>
     </>
   )
 }
