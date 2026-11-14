@@ -1,22 +1,23 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
+import { Nav, Footer } from '@/components/chrome'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'graft',
-  description: 'Tool and context routing for agents, backed by a HydraDB graph.',
+  title: { default: 'graft: the tools a task needs, nothing else', template: '%s · graft' },
+  description: 'An MCP gateway that keeps your agent’s tools and resolved entities in a HydraDB graph and returns only what each task needs.',
 }
-
-// apply a saved theme before paint so the toggle never flashes
-const themeScript = `try{var t=localStorage.getItem('graft-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}`
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body>{children}</body>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+      <body>
+        <Nav />
+        {children}
+        <Footer />
+      </body>
     </html>
   )
 }

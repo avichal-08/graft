@@ -105,7 +105,7 @@ function Walk({ r }: { r: Result }) {
   cols.forEach((c, i) => c.forEach((k, j) => pos.set(k, { x: i * colW + 4, y: j * rowH + 4 })))
   // drawn at natural size; the card scrolls sideways when the walk is deep
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img" aria-label="graph walk" style={{ width: W, maxWidth: 'none' }}>
+    <svg className="walk" viewBox={`0 0 ${W} ${H}`} width={W} height={H} role="img" aria-label="graph walk" style={{ width: W, maxWidth: 'none' }}>
       {r.trace.edges.map(([c, , p], i) => {
         const a = pos.get(c), b = pos.get(p)
         if (!a || !b) return null

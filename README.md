@@ -197,7 +197,7 @@ src/
   db.ts         hydradb http client: typed cells, bookmarks, batching
   server.ts     http api used by the web app and the load test
 bench/          tasks, baselines, learning, session memory and load benchmarks, results
-web/            next.js dashboard with the results and a live view of the walk
+web/            next.js site: landing, connect, playground, benchmarks and docs
 hydra/          run hydradb locally (published image, no docker build) and minio
 scripts/        probes and debugging helpers
 ```
@@ -215,7 +215,7 @@ wsl bash hydra/up.sh                # hydradb graph-node: bolt :7687, http :8443
 npm run ingest                      # load the catalog, once; data lives in minio
 
 npm run serve                       # http api on :7700
-npm run web                         # dashboard on :3100
+npm run web                         # site on :3100: connect, playground, benchmarks, docs
 npm run gateway                     # mcp server on stdio
 ```
 
