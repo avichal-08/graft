@@ -21,7 +21,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
     "js-tiktoken": "^1.0.21",
-    "neo4j-driver": "^6.3.2",
+    "undici": "^7.30.2",
     "zod": "^4.6.7"
   },
   "devDependencies": {

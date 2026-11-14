@@ -12,6 +12,10 @@ if [ ! -x "$rt/usr/local/bin/graph-node" ]; then
   python3 "$here/fetch.py" "$tag" "$rt"
 fi
 
+# the local filesystem object store can't do the conditional updates a writer
+# needs to reopen an existing store, so local runs start clean. point
+# CLOUD_PROVIDER=aws at s3 or minio to keep data across restarts.
+if [ "${HYDRA_KEEP:-0}" != 1 ]; then rm -rf "$data/store" "$data/cache"; fi
 mkdir -p "$data/store" "$data/cache"
 [ -f "$data/auth-token" ] || printf '%s\n' 'local-development-token-32-bytes' > "$data/auth-token"
 

@@ -1,6 +1,6 @@
 // checks the cypher features graft depends on against a live node.
 // uses a throwaway id range and cleans up after itself.
-import { run, close } from '../src/db.js'
+import { run, close, type PathValue } from '../src/db.js'
 
 const base = 900_000_000
 const id = (n: number) => base + n
@@ -33,7 +33,7 @@ const checks: [string, string, Record<string, unknown>?][] = [
 for (const [name, q, p] of checks) {
   try {
     const rows = await run(q, p ?? {})
-    const shown = JSON.stringify(rows, (_k, v) => (v && typeof v === 'object' && 'segments' in v ? summarizePath(v) : v))
+    const shown = JSON.stringify(rows, (_k, v) => (v && typeof v === 'object' && 'relationships' in v ? summarizePath(v) : v))
     console.log(`ok   ${name.padEnd(30)} ${shown.slice(0, 220)}`)
   } catch (e) {
     console.log(`FAIL ${name.padEnd(30)} ${(e as Error).message.split('\n')[0]}`)
@@ -50,6 +50,6 @@ try {
 }
 await close()
 
-function summarizePath(p: { start: { identity: unknown }; segments: { relationship: { type: string }; end: { identity: unknown } }[] }) {
-  return [p.start.identity, ...p.segments.flatMap((s) => [s.relationship.type, s.end.identity])].join(' ')
+function summarizePath(p: PathValue) {
+  return [p.nodes[0]?.id, ...p.relationships.flatMap((r) => [r.type, r.dst])].join(' ')
 }
