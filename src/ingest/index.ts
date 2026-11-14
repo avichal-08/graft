@@ -69,7 +69,7 @@ export async function ingest(log = console.log) {
 }
 
 export async function wipe() {
-  for (const label of ['Run', 'Entity', 'Session', 'Skill', 'EntityType', 'Capability', 'Tool', 'Server']) {
+  for (const label of ['Hint', 'Term', 'Run', 'Entity', 'Session', 'Skill', 'EntityType', 'Capability', 'Tool', 'Server']) {
     const rows = await run(`MATCH (n:${label}) RETURN n.id AS id`)
     await batch('UNWIND $rows AS row MATCH (n {id: row.id}) DETACH DELETE n', rows)
   }
