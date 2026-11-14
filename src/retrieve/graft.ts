@@ -63,8 +63,12 @@ export function clauses(task: string): string[] {
 // lookups are how an agent gets hold of something that already exists;
 // anything that writes is a poor way to obtain an input
 const READS: Record<string, number> = { get: 1, find: 1, search: 1, lookup: 1, query: 1, read: 1, describe: 1, check: 1, list: 0.6 }
+const WRITES = new Set(['create', 'update', 'delete', 'cancel', 'void', 'merge', 'put', 'write', 'send', 'post', 'upload', 'add', 'set', 'move', 'refund', 'rerun', 'reboot', 'start', 'stop', 'invoke', 'promote', 'acknowledge', 'resolve', 'reassign', 'mute', 'enroll', 'share', 'apply', 'assign', 'transition', 'push', 'fork', 'request', 'reply', 'schedule', 'invite', 'edit', 'append', 'modify', 'submit', 'link', 'log', 'make', 'respond', 'close', 'react'])
+// the first verb in the name: aws_logs_describe_groups -> describe
+export const verbOf = (t: ToolNode) => t.name.slice(t.server.length + 1).split('_').find((w) => w in READS || WRITES.has(w) || w === 'open') ?? ''
+export const isRead = (t: ToolNode) => (READS[verbOf(t)] ?? 0) > 0
 const verb = (t: ToolNode) => {
-  const v = t.name.slice(t.server.length + 1).split('_')[0]!
+  const v = verbOf(t)
   return READS[v] ?? (v === 'open' ? 0 : -1)
 }
 
