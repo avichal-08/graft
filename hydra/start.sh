@@ -12,15 +12,28 @@ if [ ! -x "$rt/usr/local/bin/graph-node" ]; then
   python3 "$here/fetch.py" "$tag" "$rt"
 fi
 
-# the local filesystem object store can't do the conditional updates a writer
-# needs to reopen an existing store, so local runs start clean. point
-# CLOUD_PROVIDER=aws at s3 or minio to keep data across restarts.
-if [ "${HYDRA_KEEP:-0}" != 1 ]; then rm -rf "$data/store" "$data/cache"; fi
-mkdir -p "$data/store" "$data/cache"
-[ -f "$data/auth-token" ] || printf '%s\n' 'local-development-token-32-bytes' > "$data/auth-token"
+store="${HYDRA_STORE:-minio}"
+mkdir -p "$data/cache"
+[ -f "$data/auth-token" ] || printf '%s
+' 'local-development-token-32-bytes' > "$data/auth-token"
 
-export CLOUD_PROVIDER=local
-export LOCAL_PATH="$data/store"
+if [ "$store" = minio ]; then
+  # s3 compatible store from hydra/minio.sh; the graph survives restarts
+  export CLOUD_PROVIDER=aws
+  export AWS_ENDPOINT="${HYDRA_S3_ENDPOINT:-http://127.0.0.1:9100}"
+  export AWS_ALLOW_HTTP=true
+  export AWS_BUCKET_NAME="${HYDRA_S3_BUCKET:-graft}"
+  export AWS_DEFAULT_REGION=us-east-1 AWS_REGION=us-east-1
+  export AWS_ACCESS_KEY_ID="${HYDRA_S3_KEY:-graft}"
+  export AWS_SECRET_ACCESS_KEY="${HYDRA_S3_SECRET:-graft-local-secret}"
+else
+  # the local filesystem store can't do the conditional updates a writer
+  # needs to reopen an existing store, so local runs start clean
+  rm -rf "$data/store" "$data/cache"
+  mkdir -p "$data/store" "$data/cache"
+  export CLOUD_PROVIDER=local
+  export LOCAL_PATH="$data/store"
+fi
 export GRAPH_NAMESPACE=default GRAPH_ID=default GRAPH_CELL_ID=cell-0 GRAPH_CELLS=cell-0 GRAPH_NODE_ID=node-0
 export GRAPH_BOLT_NODE_ADDRESSES=node-0=127.0.0.1:7687
 export GRAPH_ADVERTISED_BOLT_ADDR=127.0.0.1:7687
