@@ -3,7 +3,7 @@
 import { run } from '../db.js'
 import { BM25 } from './bm25.js'
 
-export type ToolNode = { id: number; key: string; name: string; server: string; description: string; definition: string; tokens: number }
+export type ToolNode = { id: number; key: string; name: string; server: string; description: string; definition: string; tokens: number; w: number }
 export type TypeNode = { id: number; key: string; free: boolean }
 export type CapNode = { id: number; key: string }
 
@@ -26,7 +26,7 @@ export class GraphCatalog {
   static async load() {
     const c = new GraphCatalog()
     const [tools, types, caps, servers, sat, cons, prod] = await Promise.all([
-      run('MATCH (t:Tool) RETURN t.id AS id, t.key AS key, t.name AS name, t.server AS server, t.description AS description, t.definition AS definition, t.tokens AS tokens'),
+      run('MATCH (t:Tool) RETURN t.id AS id, t.key AS key, t.name AS name, t.server AS server, t.description AS description, t.definition AS definition, t.tokens AS tokens, t.w AS w'),
       run('MATCH (e:EntityType) RETURN e.id AS id, e.key AS key, e.free AS free'),
       run('MATCH (c:Capability) RETURN c.id AS id, c.key AS key'),
       run('MATCH (s:Server) RETURN s.key AS key, s.title AS title'),
@@ -47,6 +47,7 @@ export class GraphCatalog {
       c.capsOf.get(r.t)!.add(r.c)
     }
     for (const r of tools as ToolNode[]) {
+      r.w ??= 1 // learned from feedback, 1 until a tool has history
       c.tools.set(r.id, r)
       c.toolByKey.set(r.key, r)
     }

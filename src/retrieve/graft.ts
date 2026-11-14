@@ -13,7 +13,7 @@ export type FindOpts = {
   fill?: boolean // top up to k with the next best text matches
 }
 
-export type Pick = { tool: ToolNode; score: number; why: 'anchor' | 'producer' | 'fill'; for?: string; depth: number; chain: Set<string> }
+export type Pick = { tool: ToolNode; score: number; why: 'anchor' | 'producer' | 'fill'; for?: string; depth: number; chain: Set<string>; parent?: number }
 
 export type FindResult = {
   picks: Pick[]
@@ -101,13 +101,21 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
     for (const [ci, s] of caps) {
       for (const { t, w } of sat.get(cat.caps[ci]!.id) ?? []) score.set(t, (score.get(t) ?? 0) + s * w)
     }
-    return [...score.entries()].map(([id, s]) => [id, s * boost(cat.tools.get(id)!)] as const).sort((a, b) => b[1] - a[1])
+    return [...score.entries()].map(([id, s]) => {
+      const t = cat.tools.get(id)!
+      return [id, s * boost(t) * t.w] as const
+    }).sort((a, b) => b[1] - a[1])
   }
 
   const picks = new Map<number, Pick>()
   const anchorIds: number[] = []
+  // a read whose every output is already held would only repeat a lookup
+  const cached = (id: number) => {
+    const gives = cat.givesOf.get(id)
+    return verb(cat.tools.get(id)!) > 0 && !!gives?.size && [...gives].every((g) => have.has(g))
+  }
   const addAnchor = (id: number, s: number) => {
-    if (picks.has(id)) return
+    if (picks.has(id) || cached(id)) return
     picks.set(id, { tool: cat.tools.get(id)!, score: s, why: 'anchor', depth: 0, chain: new Set() })
     anchorIds.push(id)
   }
@@ -179,7 +187,7 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
           const specific = 1 / Math.max(1, cat.givesOf.get(pid)?.size ?? 1)
           // starting from something the task already handed over keeps the chain short
           const grounded = [...(cat.needsOf.get(pid) ?? [])].some((e) => have.has(e)) ? 1 : 0
-          const s = 1 + verb(p) + (sameServer ? 2 : 0) + (taskServers.has(p.server) ? 1.5 : 0) + named + specific + grounded
+          const s = 1 + verb(p) + (sameServer ? 2 : 0) + (taskServers.has(p.server) ? 1.5 : 0) + named + specific + grounded + 2 * Math.log(p.w)
             + Math.min(1, 0.1 * (textScore[cat.toolPos.get(pid)!] ?? 0)) - 0.8 * unmet
           return { pid, s }
         })
@@ -190,15 +198,23 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
       produced.add(type.key)
       edges.push([cat.tools.get(consumers[0]!)!.key, type.key, cat.tools.get(best.pid)!.key])
       if (!picks.has(best.pid)) {
-        picks.set(best.pid, { tool: cat.tools.get(best.pid)!, score: best.s, why: 'producer', for: type.key, depth: d, chain })
+        picks.set(best.pid, { tool: cat.tools.get(best.pid)!, score: best.s, why: 'producer', for: type.key, depth: d, chain, parent: consumers[0] })
         next.push(best.pid)
       }
     }
     frontier = next
   }
 
-  // 4. order: anchors in clause order, then producers nearest first; cut to k and budget
-  const ordered = [...picks.values()].sort((a, b) => a.depth - b.depth || (a.why === 'anchor' ? 0 : b.score - a.score))
+  // 4. order: each anchor followed by the chain it needs, so a small k keeps
+  // whole chains for the strongest anchors rather than many bare anchors
+  const children = new Map<number, Pick[]>()
+  for (const p of picks.values()) if (p.parent !== undefined) children.set(p.parent, [...(children.get(p.parent) ?? []), p])
+  const ordered: Pick[] = []
+  const emit = (p: Pick) => {
+    ordered.push(p)
+    for (const c of children.get(p.tool.id) ?? []) emit(c)
+  }
+  for (const id of anchorIds) emit(picks.get(id)!)
   const out: Pick[] = []
   let tokens = 0
   for (const p of ordered) {
@@ -210,7 +226,7 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
     for (const [id, s] of whole) {
       if (out.length >= k) break
       const tool = cat.tools.get(id)!
-      if (picks.has(id) || tokens + tool.tokens > budget) continue
+      if (picks.has(id) || cached(id) || tokens + tool.tokens > budget) continue
       out.push({ tool, score: s, why: 'fill', depth: depth + 1, chain: new Set() })
       tokens += tool.tokens
     }
