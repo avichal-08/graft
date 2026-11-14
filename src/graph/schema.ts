@@ -9,6 +9,8 @@ export const RANGE = {
   Session: 6_000_000,
   Entity: 7_000_000,
   Run: 8_000_000,
+  Term: 9_000_000,
+  Hint: 10_000_000,
 } as const
 
 export type Kind = keyof typeof RANGE
@@ -30,4 +32,6 @@ export const REL = {
   INSTANCE_OF: 'INSTANCE_OF', // entity -> entity type
   RESOLVED_BY: 'RESOLVED_BY', // entity -> tool
   CALLED: 'CALLED', // run -> tool
+  SUGGESTS: 'SUGGESTS', // term -> hint (learned)
+  FOR: 'FOR', // hint -> tool
 } as const

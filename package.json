@@ -12,6 +12,7 @@
     "ingest": "tsx src/ingest/index.ts",
     "probe": "tsx scripts/probe.ts",
     "bench": "tsx bench/run.ts",
+    "learn": "tsx bench/learn.ts",
     "load": "tsx bench/load.ts",
     "gateway": "tsx src/gateway/mcp.ts",
     "serve": "tsx src/server.ts",

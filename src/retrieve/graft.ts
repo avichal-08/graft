@@ -3,6 +3,11 @@
 // those anchors need and the agent doesn't already have.
 import { run, type Row } from '../db.js'
 import type { GraphCatalog, ToolNode } from './catalog.js'
+import { typeTerm, wordTerms } from '../learn/hints.js'
+
+// how much learned hints count against text relevance
+const HINT_ANCHOR = 2
+const HINT_PRODUCER = 2
 
 export type FindOpts = {
   have?: string[] // entity types the agent already holds (from the task or the session)
@@ -92,7 +97,8 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
     }
   }
 
-  const rank = (toolText: Float64Array, caps: [number, number][], servers: Set<string>, strong: boolean) => {
+  // text relevance plus capability edges plus what past outcomes taught us for these words
+  const rank = (toolText: Float64Array, caps: [number, number][], servers: Set<string>, strong: boolean, terms: string[]) => {
     const boost = (t: ToolNode) => (!servers.size ? 1 : servers.has(t.server) ? (strong ? 1.8 : 1.3) : 0.75)
     const score = new Map<number, number>()
     cat.toolList.forEach((t, i) => {
@@ -101,10 +107,11 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
     for (const [ci, s] of caps) {
       for (const { t, w } of sat.get(cat.caps[ci]!.id) ?? []) score.set(t, (score.get(t) ?? 0) + s * w)
     }
-    return [...score.entries()].map(([id, s]) => {
-      const t = cat.tools.get(id)!
-      return [id, s * boost(t) * t.w] as const
-    }).sort((a, b) => b[1] - a[1])
+    for (const id of cat.hints.suggested(terms)) if (!score.has(id)) score.set(id, 0)
+    return [...score.entries()]
+      .map(([id, s]) => [id, (s + HINT_ANCHOR * cat.hints.bonus(terms, id)) * boost(cat.tools.get(id)!)] as const)
+      .filter(([, s]) => s > 0)
+      .sort((a, b) => b[1] - a[1])
   }
 
   const picks = new Map<number, Pick>()
@@ -124,7 +131,7 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
 
   // each clause gets its best tool, plus a near tie from another server (stripe vs shopify refunds)
   for (const c of perClause) {
-    const ranked = rank(c.tool, c.cap, c.servers.size ? c.servers : taskServers, c.servers.size > 0)
+    const ranked = rank(c.tool, c.cap, c.servers.size ? c.servers : taskServers, c.servers.size > 0, wordTerms(c.text))
     const best = ranked[0]
     if (!best) continue
     addAnchor(best[0], best[1])
@@ -135,7 +142,7 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
 
   // then the strongest tools for the task as a whole, which catches intents inside one clause
   const textScore = cat.toolIndex.scores(task)
-  const whole = rank(textScore, wholeCaps, taskServers, false)
+  const whole = rank(textScore, wholeCaps, taskServers, false, wordTerms(task))
   const top = whole[0]?.[1] ?? 0
   for (const [id, s] of whole) {
     if (anchorIds.length >= maxAnchors || s < top * 0.5) break
@@ -187,7 +194,7 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
           const specific = 1 / Math.max(1, cat.givesOf.get(pid)?.size ?? 1)
           // starting from something the task already handed over keeps the chain short
           const grounded = [...(cat.needsOf.get(pid) ?? [])].some((e) => have.has(e)) ? 1 : 0
-          const s = 1 + verb(p) + (sameServer ? 2 : 0) + (taskServers.has(p.server) ? 1.5 : 0) + named + specific + grounded + 2 * Math.log(p.w)
+          const s = 1 + verb(p) + (sameServer ? 2 : 0) + (taskServers.has(p.server) ? 1.5 : 0) + named + specific + grounded + HINT_PRODUCER * Math.log(cat.hints.w(typeTerm(type.key), pid))
             + Math.min(1, 0.1 * (textScore[cat.toolPos.get(pid)!] ?? 0)) - 0.8 * unmet
           return { pid, s }
         })

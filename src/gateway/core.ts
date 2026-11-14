@@ -1,16 +1,18 @@
 // the gateway an agent talks to. three verbs: find_tools, call_tool and
 // recall_entities, plus feedback. everything it knows lives in hydradb.
 import { randomUUID } from 'node:crypto'
-import { batch, float, run } from '../db.js'
+import { batch, run } from '../db.js'
 import { RANGE, REL } from '../graph/schema.js'
 import { GraphCatalog, type ToolNode } from '../retrieve/catalog.js'
 import { findTools, type Pick } from '../retrieve/graft.js'
 import { execute } from './executor.js'
+import { typeTerm, wordTerms } from '../learn/hints.js'
 
 export type Known = { type: string; value: string; tool: string }
-type Lookup = { picks: Set<number>; called: Set<number>; at: number }
+type Lookup = { task: string; have: Set<string>; picks: Map<number, Pick>; called: Set<number>; at: number }
 
-const LR = { used: 1.1, missed: 1.25, unused: 0.97, max: 3, min: 0.3 }
+// multiplicative updates to hint weights, fixed up front rather than tuned on the benchmark
+const LR = { hit: 1.15, missed: 1.6, ignored: 0.9, producerHit: 1.2, producerMissed: 1.6, producerWrong: 0.7, failed: 0.9 }
 
 export class Gateway {
   private sessions = new Map<string, number>()
@@ -71,7 +73,7 @@ export class Gateway {
     const have = [...new Set([...(input.have ?? []), ...known.map((e) => e.type)])]
     const r = await findTools(this.cat, input.task, { have, k: input.k, budget: input.budget, fill: !input.lean })
     const lookup = randomUUID()
-    this.lookups.set(lookup, { picks: new Set(r.picks.map((p) => p.tool.id)), called: new Set(), at: Date.now() })
+    this.lookups.set(lookup, { task: input.task, have: new Set(have), picks: new Map(r.picks.map((p) => [p.tool.id, p])), called: new Set(), at: Date.now() })
     this.gc()
     return {
       lookup,
@@ -117,28 +119,54 @@ export class Gateway {
     for (const r of rows) mem.set(`${r.type}:${r.value}`, { type: r.type, value: r.value, tool: r.tool })
   }
 
-  // the agent says whether the task worked. tools it used get stronger, tools it
-  // had to find on its own get stronger still, picks it ignored fade a little.
+  // the agent says whether the task worked and what it used. word hints learn
+  // which tools a phrasing needs, type hints learn which producer to trust for
+  // an entity. a tool it needed that graft missed is the strongest signal.
   async feedback(input: { lookup: string; success: boolean; used?: string[] }) {
     const l = this.lookups.get(input.lookup)
     if (!l) throw new Error(`unknown or expired lookup ${input.lookup}`)
     const used = new Set([...l.called, ...(input.used ?? []).map((n) => this.tool(n)?.id).filter((x): x is number => x !== undefined)])
-    const changes = new Map<number, number>()
-    if (input.success) {
-      for (const id of used) changes.set(id, l.picks.has(id) ? LR.used : LR.missed)
-      for (const id of l.picks) if (!used.has(id)) changes.set(id, LR.unused)
+    const terms = wordTerms(l.task)
+    const changes: { term: string; tool: number; factor: number }[] = []
+    const words = (tool: number, factor: number) => terms.forEach((term) => changes.push({ term, tool, factor }))
+
+    if (!input.success) {
+      for (const id of used) if (l.picks.has(id)) words(id, LR.failed)
     } else {
-      for (const id of used) if (l.picks.has(id)) changes.set(id, LR.unused)
+      const needed = new Set<string>()
+      for (const id of [...l.picks.keys(), ...used]) for (const e of this.cat.needsOf.get(id) ?? []) if (!l.have.has(e)) needed.add(e)
+      const producerFor = new Map<string, number>()
+      for (const p of l.picks.values()) if (p.why === 'producer' && p.for) producerFor.set(p.for, p.tool.id)
+
+      for (const id of used) {
+        const pick = l.picks.get(id)
+        if (pick) {
+          words(id, LR.hit)
+          if (pick.why === 'producer' && pick.for) changes.push({ term: typeTerm(pick.for), tool: id, factor: LR.producerHit })
+          continue
+        }
+        words(id, LR.missed)
+        for (const type of this.cat.givesOf.get(id) ?? []) {
+          if (!needed.has(type)) continue
+          changes.push({ term: typeTerm(type), tool: id, factor: LR.producerMissed })
+          const wrong = producerFor.get(type)
+          if (wrong !== undefined && !used.has(wrong)) changes.push({ term: typeTerm(type), tool: wrong, factor: LR.producerWrong })
+        }
+      }
+      for (const [id, p] of l.picks) {
+        if (used.has(id)) continue
+        // ignored anchors keep their word hints: those words show up in unrelated tasks too
+        if (p.why === 'producer' && p.for) changes.push({ term: typeTerm(p.for), tool: id, factor: LR.ignored })
+      }
     }
-    const rows: { id: number; w: ReturnType<typeof float> }[] = []
-    for (const [id, f] of changes) {
-      const t = this.cat.tools.get(id)!
-      t.w = Math.min(LR.max, Math.max(LR.min, t.w * f))
-      rows.push({ id, w: float(t.w) })
-    }
-    await batch('UNWIND $rows AS row MERGE (n {id: row.id}) SET n:Tool, n.w = row.w', rows)
+    const updated = await this.cat.hints.update(changes)
     this.lookups.delete(input.lookup)
-    return { updated: rows.length }
+    return { updated, hints: this.cat.hints.size }
+  }
+
+  // forget everything learned from feedback
+  async resetLearning() {
+    await this.cat.hints.reset()
   }
 
   private gc() {
