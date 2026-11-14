@@ -24,7 +24,7 @@ export const stripe = server('stripe', 'Stripe', 'Customers, payments, refunds, 
   t('list_products', 'List products with active state and default price.', ['active:bool Only active products', ...lim], { gives: ['stripe.product', 'stripe.price'], caps: ['list plans'] }),
   t('list_prices', 'List prices for a product with amount, interval and currency.', ['product Product id', 'active:bool Only active prices', ...lim], { needs: ['stripe.product'], gives: ['stripe.price'], caps: ['list plans'] }),
   t('create_payment_link', 'Create a shareable checkout link for one or more prices.', ['line_items:arr! Items as JSON with price and quantity', 'after_completion_url Redirect url after payment'], { needs: ['stripe.price'], gives: ['url'], caps: ['collect payment', 'create checkout link'] }),
-  t('list_disputes', 'List disputes with reason, status and evidence due date.', ['charge Charge id', ...lim], { gives: ['stripe.dispute', 'stripe.charge'], caps: ['chargebacks'] }),
+  t('list_disputes', 'List disputes with reason, status and evidence due date.', ['charge Charge id', ...lim], { gives: ['stripe.dispute'], caps: ['chargebacks'] }),
   t('update_dispute', 'Submit evidence for a dispute.', ['dispute! Dispute id', 'evidence:obj! Evidence fields', 'submit:bool Submit now'], { needs: ['stripe.dispute', 'text'], caps: ['chargebacks'] }),
   t('get_balance', 'Get the available and pending account balance by currency.', [], { caps: ['account balance'] }),
 ])
@@ -49,7 +49,7 @@ export const hubspot = server('hubspot', 'HubSpot', 'CRM contacts, companies, de
 
 export const shopify = server('shopify', 'Shopify', 'Orders, products, customers and fulfillments in a Shopify store.', [
   t('search_orders', 'Search orders by name (#1001), email, financial or fulfillment status.', ['query! Search, e.g. "email:jane@acme.com financial_status:paid"', 'first:int Max results'], { needs: ['query'], gives: ['shopify.order'], caps: ['find order'] }),
-  t('get_order', 'Get an order with line items, totals, shipping address, customer and fulfillment status.', ['id! Order id'], { needs: ['shopify.order'], gives: ['shopify.customer', 'shopify.product', 'email'], caps: ['find order', 'order status'] }),
+  t('get_order', 'Get an order with line items, totals, shipping address, customer and fulfillment status.', ['id! Order id'], { needs: ['shopify.order'], gives: ['shopify.customer', 'shopify.product', 'shopify.fulfillment', 'email'], caps: ['find order', 'order status'] }),
   t('refund_order', 'Refund some or all line items and shipping on an order.', ['orderId! Order id', 'lineItems:arr Line item ids and quantities as JSON', 'shipping:bool Refund shipping', 'notify:bool Email the customer', 'note Reason'], { needs: ['shopify.order'], caps: ['refund payment', 'issue refund', 'refund order'] }),
   t('cancel_order', 'Cancel an order, optionally restocking and refunding.', ['orderId! Order id', 'reason:enum(customer|fraud|inventory|declined|other) Reason', 'restock:bool Restock items', 'refund:bool Refund payment'], { needs: ['shopify.order'], caps: ['cancel order'] }),
   t('create_fulfillment', 'Mark items as fulfilled with tracking details.', ['orderId! Order id', 'trackingNumber Tracking number', 'trackingCompany Carrier', 'notifyCustomer:bool Send shipping email'], { needs: ['shopify.order'], gives: ['shopify.fulfillment'], caps: ['ship order'] }),
