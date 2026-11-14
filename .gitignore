@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+*.log
+bench/results/*.json
+!bench/results/.gitkeep
