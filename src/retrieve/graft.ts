@@ -156,9 +156,16 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
   // 3. walk needs -> producers, pruning on what the agent already has
   let frontier = anchorIds
   const produced = new Set<string>()
+  const needsSeen = new Map<number, number[]>() // tool -> entity types it consumes, as read this call
   for (let d = 1; d <= depth && frontier.length; d++) {
-    const consumes = await expand('CONSUMES', frontier)
-    queries++
+    // the frontier was a candidate set last level, so its needs are usually already in hand
+    const uncached = frontier.filter((id) => !needsSeen.has(id))
+    if (uncached.length) {
+      for (const [id, ets] of await expand('CONSUMES', uncached)) needsSeen.set(id, ets)
+      for (const id of uncached) if (!needsSeen.has(id)) needsSeen.set(id, [])
+      queries++
+    }
+    const consumes = new Map(frontier.map((id) => [id, needsSeen.get(id) ?? []]))
     const missing = new Map<number, number[]>() // entity type id -> consumers
     for (const [tid, ets] of consumes) {
       for (const et of ets) {
@@ -174,6 +181,7 @@ export async function findTools(cat: GraphCatalog, task: string, opts: FindOpts 
     const candidates = [...new Set([...producers.values()].flat())].filter((id) => !picks.has(id))
     const candNeeds = await expand('CONSUMES', candidates)
     queries++
+    for (const id of candidates) needsSeen.set(id, candNeeds.get(id) ?? [])
 
     const next: number[] = []
     for (const [et, consumers] of missing) {
