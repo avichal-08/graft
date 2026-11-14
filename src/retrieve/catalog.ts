@@ -16,6 +16,7 @@ export class GraphCatalog {
   servers: { key: string; title: string }[] = []
   toolList: ToolNode[] = []
   toolIndex!: BM25
+  toolDocs: string[] = [] // text each tool is indexed under, in toolList order
   capIndex!: BM25
   toolPos = new Map<number, number>()
   capsOf = new Map<number, Set<number>>() // tool id -> capability ids
@@ -58,10 +59,11 @@ export class GraphCatalog {
     c.toolList = [...c.tools.values()].sort((a, b) => a.id - b.id)
     c.toolList.forEach((t, i) => c.toolPos.set(t.id, i))
     const capKey = new Map(c.caps.map((x) => [x.id, x.key]))
-    c.toolIndex = new BM25(c.toolList.map((t) => {
-      const caps = [...(c.capsOf.get(t.id) ?? [])].map((id) => capKey.get(id)).join(' ')
-      return `${t.name.replace(/_/g, ' ')} ${t.description} ${t.server} ${caps}`
-    }))
+    c.toolDocs = c.toolList.map((t) => {
+      const caps = [...(c.capsOf.get(t.id) ?? [])].map((id) => capKey.get(id)).join(', ')
+      return `${t.name.replace(/_/g, ' ')}. ${t.description} (${t.server}) ${caps}`
+    })
+    c.toolIndex = new BM25(c.toolDocs)
     c.capIndex = new BM25(c.caps.map((x) => x.key))
     return c
   }

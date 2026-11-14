@@ -1,7 +1,7 @@
 // npm run bench -- [--split dev|test|all] [--k 10] [--verbose]
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { GraphCatalog } from '../src/retrieve/catalog.js'
-import { all, flat, lean, graft, type Arm } from './arms.js'
+import { all, flat, dense, lean, graft, type Arm } from './arms.js'
 import { tasks, dev, test, type Task } from './tasks.js'
 
 const arg = (name: string, def: string) => {
@@ -20,7 +20,7 @@ type Result = { arm: string; recall: number; complete: number; tokens: number; t
 const results: Result[] = []
 const perTask: Record<string, Record<string, { recall: number; missing: string[] }>> = {}
 
-for (const arm of [all, flat, lean, graft] as Arm[]) {
+for (const arm of [all, flat, dense, lean, graft] as Arm[]) {
   let recall = 0, complete = 0, tokens = 0, tools = 0, hits = 0, queries = 0, ms = 0
   for (const t of set) {
     const t0 = performance.now()
